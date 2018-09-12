@@ -56,6 +56,44 @@ def membership_check(room_Id, bot_token, allowed_person_Org_Id):
     print("{}, membership_check ending".format(date_time))
     return room_member_orgs_allowed
 
+def check_and_delete_membership(bot_token, allowed_person_Org_Id):
+    membership_url = "https://api.ciscospark.com/v1/memberships"
+    membership_message_response = requests.get(membership_url, verify=True, headers={'Authorization': 'Bearer {}'.format(bot_token)})
+
+    response_json = json.loads(membership_message_response.text)
+    print(response_json, membership_message_response.status_code)
+    if membership_message_response.status_code != 200:
+        return
+    memberships = response_json['items']
+    # print(memberships)
+
+    bad_memberships = []
+    for membership_item in memberships:
+        roomId = membership_item['roomId']
+        membership_id = membership_item['id']
+
+        allowed_membership = membership_check(roomId, bot_token, allowed_person_Org_Id)
+
+        if allowed_membership == False:
+            bad_memberships.append(membership_id)
+
+            print("   Found Membership to delete:\n   ...roomId: {}\n   ...membershipId:  {}\n".format(roomId,
+                                                                                                       membership_id))
+
+    if len(bad_memberships) > 0:
+        for bad_membership_id in bad_memberships:
+            print("   ...deleting membership:  {}".format(bad_membership_id))
+            delete_url = "https://api.ciscospark.com/v1/memberships/{}".format(bad_membership_id)
+            delete_message_response = requests.delete(delete_url, verify=True,
+                                               headers={'Authorization': 'Bearer {}'.format(bot_token)})
+            if delete_message_response.status_code != 204:
+                print("!!!***...unable to delete membership.  Rerun audit to delete")
+            else:
+                print("   ...delete membership status code: {}".format(delete_message_response.status_code))
+
+    else:
+        print("...no memberships to delete")
+
 
 def verify_signature(key, raw_request_data, request_headers):
     date_time = dt.datetime.now()
