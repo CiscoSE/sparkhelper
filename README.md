@@ -18,13 +18,8 @@ def membership_check(room_Id, bot_token, allowed_person_Org_Id):
 
         message_json = json.loads(message_response.text)
 
-        org_id_list = [d['personOrgId'] for d in message_json['items']]
+        room_member_orgs_allowed = orgs_are_in_allowed_org_list(allowed_person_Org_Id, message_json)
 
-        number_orgs_not_allowed = len(set(org_id_list).symmetric_difference(allowed_person_Org_Id))
-        print('{}:   membership_check: items not in allowed or list: {}'.format(date_time, number_orgs_not_allowed))
-
-        if number_orgs_not_allowed == 0:
-            room_member_orgs_allowed = True
     else:
         print("{},   membership check failed: {}".format(date_time, message_response))
 
