@@ -29,6 +29,25 @@ __contributors__ = []
 __copyright__ = "Copyright (c) 2018 Cisco and/or its affiliates."
 __license__ = "Cisco Sample Code License, Version 1.0"
 
+def get_membership_org_id_list(json_items):
+    return [d['personOrgId'] for d in json_items['items']]
+
+def orgs_are_in_allowed_org_list(allowed_person_Org_Id, message_json):
+
+    if type(allowed_person_Org_Id) is str:
+        the_allowed_person_Org_id_list = [allowed_person_Org_Id]
+    else:
+        the_allowed_person_Org_id_list=allowed_person_Org_Id
+
+    org_id_list = get_membership_org_id_list(message_json)
+
+    number_orgs_not_allowed = len(set(the_allowed_person_Org_id_list).symmetric_difference(org_id_list))
+
+    orgs_are_allowed=False
+    if number_orgs_not_allowed == 0:
+        orgs_are_allowed=True
+    return orgs_are_allowed
+
 
 def membership_check(room_Id, bot_token, allowed_person_Org_Id):
     date_time = dt.datetime.now()
@@ -43,13 +62,8 @@ def membership_check(room_Id, bot_token, allowed_person_Org_Id):
 
         message_json = json.loads(message_response.text)
 
-        org_id_list = [d['personOrgId'] for d in message_json['items']]
+        room_member_orgs_allowed = orgs_are_in_allowed_org_list(allowed_person_Org_Id, message_json)
 
-        number_orgs_not_allowed = len(set(org_id_list).symmetric_difference(allowed_person_Org_Id))
-        print('{}:   membership_check: items not in allowed or list: {}'.format(date_time, number_orgs_not_allowed))
-
-        if number_orgs_not_allowed == 0:
-            room_member_orgs_allowed = True
     else:
         print("{},   membership check failed: {}".format(date_time, message_response))
 

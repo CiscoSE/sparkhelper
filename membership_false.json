@@ -1,0 +1,27 @@
+{
+            "items": [
+                {
+                    "id": "123",
+                    "roomId": "roomID123",
+                    "personId": "personID123",
+                    "personEmail": "someone_else@email.com",
+                    "personDisplayName": "Someone Else",
+                    "personOrgId": "orgID123",
+                    "isModerator": false,
+                    "isMonitor": false,
+                    "created": "2018-08-30T20:19:18.775Z"
+                },
+                {
+                    "id": "abc",
+                    "roomId": "roomIDabc",
+                    "personId": "personIDabc",
+                    "personEmail": "someonesABC@email.com",
+                    "personDisplayName": "Some One",
+                    "personOrgId": "orgIDabcABV",
+                    "isModerator": false,
+                    "isMonitor": false,
+                    "created": "2018-08-30T20:13:27.519Z"
+                }
+
+            ]
+        }
