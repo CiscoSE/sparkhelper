@@ -14,8 +14,19 @@
                 {
                     "id": "abc",
                     "roomId": "roomIDabc",
+                    "personId": "personID123abc",
+                    "personEmail": "someone_else@email.com",
+                    "personDisplayName": "Someone Else",
+                    "personOrgId": "orgID123",
+                    "isModerator": false,
+                    "isMonitor": false,
+                    "created": "2018-08-30T20:19:18.775Z"
+                },
+                {
+                    "id": "abc",
+                    "roomId": "roomIDabc",
                     "personId": "personIDabc",
-                    "personEmail": "someonesABC@email.com",
+                    "personEmail": "someonesABC@otheremail.com",
                     "personDisplayName": "Some One",
                     "personOrgId": "orgIDabcABV",
                     "isModerator": false,
